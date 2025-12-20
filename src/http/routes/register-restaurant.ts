@@ -16,18 +16,18 @@ type InsertRestaurantDTO = z.infer<typeof insertRestaurantSchema>
 
 export const setUpRegisterRestaurantRoute = (router: Router) => {
   router.post('/restaurants', validate(insertRestaurantSchema), async (req, res) => {
-  const { restaurantName, managerName, email, phone } = req.body as InsertRestaurantDTO
+    const { restaurantName, managerName, email, phone } = req.body as InsertRestaurantDTO
 
-  const [manager] = await db
-    .insert(users)
-    .values({
-      name: managerName,
-      email,
-      phone,
-      role: 'manager'
-    })
-    .returning({ 
-      id: users.id 
+    const [manager] = await db
+      .insert(users)
+      .values({
+        name: managerName,
+        email,
+        phone,
+        role: 'manager'
+      })
+      .returning({ 
+        id: users.id 
     })
 
     await db.insert(restaurants).values({
@@ -35,6 +35,6 @@ export const setUpRegisterRestaurantRoute = (router: Router) => {
       managerId: manager!.id
     })
 
-    res.status(204)
+    res.status(204).send()
   })
 }
