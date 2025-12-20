@@ -1,10 +1,9 @@
-import express from 'express'
-import { db } from '../db/connection'
-import { restaurants, users } from '../db/schema'
+import { db } from '../../db/connection'
+import { restaurants, users } from '../../db/schema'
 import z from 'zod'
-import { validate } from './middlewares/request-body-validator'
+import { validate } from '../middlewares/request-body-validator'
+import type { Router } from 'express'
 
-const app = express()
 
 const insertRestaurantSchema = z.object({
   restaurantName: z.string().nonempty(),
@@ -15,7 +14,8 @@ const insertRestaurantSchema = z.object({
 
 type InsertRestaurantDTO = z.infer<typeof insertRestaurantSchema>
 
-app.post('/restaurants', validate(insertRestaurantSchema), async (req, res) => {
+export const setUpRegisterRestaurantRoute = (router: Router) => {
+  router.post('/restaurants', validate(insertRestaurantSchema), async (req, res) => {
   const { restaurantName, managerName, email, phone } = req.body as InsertRestaurantDTO
 
   const [manager] = await db
@@ -30,14 +30,11 @@ app.post('/restaurants', validate(insertRestaurantSchema), async (req, res) => {
       id: users.id 
     })
 
-  await db.insert(restaurants).values({
-    name: restaurantName,
-    managerId: manager!.id
+    await db.insert(restaurants).values({
+      name: restaurantName,
+      managerId: manager!.id
+    })
+
+    res.status(204)
   })
-
-  res.status(204)
-})
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-})
+}
