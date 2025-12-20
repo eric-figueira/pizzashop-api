@@ -4,14 +4,20 @@ import { users } from './users'
 import { relations } from 'drizzle-orm'
 
 export const restaurants = pgTable('restaurants', {
-  id: text('id').$defaultFn(() => createId()).primaryKey(),
+  id: text('id')
+    .$defaultFn(() => createId())
+    .primaryKey(),
   name: text('name').notNull(),
   description: text('description'),
   managerId: text('manager_id').references(() => users.id, {
     onDelete: 'set null'
   }),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  createdAt: timestamp('created_at')
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .defaultNow(),
 })
 
 
