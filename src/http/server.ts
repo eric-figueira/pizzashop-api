@@ -1,14 +1,16 @@
 import express, { Router } from 'express'
 import * as r from './routes'
+const cookieParser = require('cookie-parser')
 
 const app = express()
 const router = Router()
 
 app.use(express.json())
+app.use(cookieParser())
 app.use('/api/v1', router)
 
-router.get('/', () => {
-  return 'Welcome to the API'
+router.get('/', (req, res) => {
+  res.send('Welcome to the API')
 })
 
 r.setUpRegisterRestaurantRoute(router)
