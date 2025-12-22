@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
 r.setUpRegisterRestaurantRoute(router)
 r.setUpSendAuthLinkRoute(router)
 r.setUpAuthenticateFromLinkRoute(router)
+r.setUpSignOutRoute(router)
 
 
 app.listen(3000, () => {

@@ -1,11 +1,11 @@
-import type { Router } from "express";
-import z from "zod";
-import { validate } from "../middlewares/request-parameters-validator";
-import { db } from "../../db/connection";
-import dayjs from "dayjs";
-import { sign } from "../services/jwt";
-import { authLinks } from "../../db/schema";
-import { eq } from "drizzle-orm";
+import type { Router } from 'express'
+import z from 'zod'
+import { validate } from '../middlewares/request-parameters-validator'
+import { db } from '../../db/connection'
+import dayjs from 'dayjs'
+import { sign } from '../services/jwt'
+import { authLinks } from '../../db/schema'
+import { eq } from 'drizzle-orm'
 
 const authenticateFromLinkSchema = z.object({
   code: z.string(),
@@ -15,7 +15,7 @@ const authenticateFromLinkSchema = z.object({
 type AuthenticateFromLinkDTO = z.infer<typeof authenticateFromLinkSchema>
 
 export const setUpAuthenticateFromLinkRoute = (router: Router) => {
-  router.get('/auth-links/authenticate', validate(authenticateFromLinkSchema, "query"), async (req, res) => {
+  router.get('/auth-links/authenticate', validate(authenticateFromLinkSchema, 'query'), async (req, res) => {
     const { code, redirect } = req.query as AuthenticateFromLinkDTO
 
     const authLinkFromCode = await db.query.authLinks.findFirst({
