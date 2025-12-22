@@ -1,7 +1,6 @@
 import z from 'zod'
 import { env } from '../../env'
-
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 
 const userPaylodSchema = z.object({
   sub: z.string(),
@@ -10,13 +9,17 @@ const userPaylodSchema = z.object({
 
 type UserPayload = z.infer<typeof userPaylodSchema>
 
-export const sign = (data: UserPayload, expiresIn: number) => {
-  jwt.sign(
+export const sign = (data: UserPayload, expiresIn?: number) => {
+  const token = jwt.sign(
     data, 
     env.JWT_SECRET_KEY, 
-    { algorithm: 'HS256' },
-    { expiresIn }
+    { 
+      algorithm: 'HS256',
+      expiresIn: expiresIn || '1d',
+    },
   )
+
+  return token
 }
 
 export const verify = (token: string) => {

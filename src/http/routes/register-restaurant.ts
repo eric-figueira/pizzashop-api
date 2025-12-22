@@ -1,7 +1,7 @@
 import { db } from '../../db/connection'
 import { restaurants, users } from '../../db/schema'
 import z from 'zod'
-import { validate } from '../middlewares/request-body-validator'
+import { validate } from '../middlewares/request-parameters-validator'
 import type { Router } from 'express'
 
 

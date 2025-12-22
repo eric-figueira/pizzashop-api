@@ -1,6 +1,6 @@
 import type { Router } from 'express'
 import z from 'zod'
-import { validate } from '../middlewares/request-body-validator'
+import { validate } from '../middlewares/request-parameters-validator'
 import { db } from '../../db/connection'
 import { authLinks } from '../../db/schema'
 import { createId } from '@paralleldrive/cuid2'
