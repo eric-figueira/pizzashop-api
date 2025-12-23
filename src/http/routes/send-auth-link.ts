@@ -5,6 +5,8 @@ import { db } from '../../db/connection'
 import { authLinks } from '../../db/schema'
 import { createId } from '@paralleldrive/cuid2'
 import { env } from '../../env'
+import { mail } from '../services/mail'
+import nodemailer from 'nodemailer'
 
 const sendAuthLinkSchema = z.object({
   email: z.email(),
@@ -39,6 +41,17 @@ export const setUpSendAuthLinkRoute = (router: Router) => {
     authLink.searchParams.set('redirect', env.AUTH_REDIRECT_URL)
 
     // Send the auth link via email (not implemented here)
+    const info = await mail.sendMail({
+      from: {
+        name: 'Pizza Shop',
+        address: 'hi@pizzashop.com'
+      },
+      to: email,
+      subject: 'Authenticate to Pizza Shop',
+      text: `Click the link to authenticate: ${authLink.toString()}`,
+    })
+
+    console.log(nodemailer.getTestMessageUrl(info))
     console.log(authLink.toString())
 
     res.send()
