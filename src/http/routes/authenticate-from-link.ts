@@ -43,11 +43,11 @@ export const setUpAuthenticateFromLinkRoute = (router: Router) => {
     const token = sign({ 
       sub: authLinkFromCode.userId,
       restaurantId: managedRestaurant ? managedRestaurant.id : null,
-    })
+    }, 60 * 60 * 24 * 1) // 1 day
 
     res.cookie('auth', token, { 
       httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7, // 7 days,
+      maxAge: 60 * 60 * 24 * 1, // 1 day,
       path: '/',
     })
 
