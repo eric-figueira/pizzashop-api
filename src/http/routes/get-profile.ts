@@ -1,6 +1,7 @@
 import type { Router } from 'express'
 import { verify } from '../services/jwt'
 import { db } from '../../db/connection'
+import { NotFoundError, UnauthorizedError } from '../errors'
 
 export const setUpGetProfileRoute = (router: Router) => {
   router.get('/me', async (req, res) => {
@@ -9,7 +10,7 @@ export const setUpGetProfileRoute = (router: Router) => {
     const payload = verify(authCookie)
 
     if (!payload) {
-      throw new Error('Unauthorized.')
+      throw new UnauthorizedError('Unauthorized.')
     }
 
     const { sub } = payload
@@ -20,7 +21,7 @@ export const setUpGetProfileRoute = (router: Router) => {
     })
 
     if (!user) {
-      throw new Error('User not found.')
+      throw new NotFoundError('User not found.')
     }
 
     res.send(user)

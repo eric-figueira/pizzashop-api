@@ -7,6 +7,7 @@ import { createId } from '@paralleldrive/cuid2'
 import { env } from '../../env'
 import { mail } from '../services/mail'
 import nodemailer from 'nodemailer'
+import { NotFoundError } from '../errors'
 
 const sendAuthLinkSchema = z.object({
   email: z.email(),
@@ -25,7 +26,7 @@ export const setUpSendAuthLinkRoute = (router: Router) => {
     })
     
     if (!userFromEmail) {
-      throw new Error('User not found.')
+      throw new NotFoundError('User not found.')
     }
 
     const authLinkCode = createId()

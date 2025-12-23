@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { sign } from '../services/jwt'
 import { authLinks } from '../../db/schema'
 import { eq } from 'drizzle-orm'
+import { NotFoundError, UnauthorizedError } from '../errors'
 
 const authenticateFromLinkSchema = z.object({
   code: z.string(),
@@ -25,13 +26,13 @@ export const setUpAuthenticateFromLinkRoute = (router: Router) => {
     })
 
     if (!authLinkFromCode) {
-      throw new Error('Auth link not found.')
+      throw new NotFoundError('Auth link not found.')
     }
 
     const daysSinceAuthLinkCreation = dayjs().diff(authLinkFromCode.createdAt, 'day')
 
     if (daysSinceAuthLinkCreation > 7) {
-      throw new Error('Auth link expired.')
+      throw new UnauthorizedError('Auth link has expired.')
     }
 
     const managedRestaurant = await db.query.restaurants.findFirst({
