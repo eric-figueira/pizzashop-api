@@ -10,7 +10,7 @@ export const setUpGetManagedRestaurantRoute = (router: Router) => {
       const payload = verify(authCookie)
   
       if (!payload) {
-        throw new UnauthorizedError('Unauthorized.')
+        throw new UnauthorizedError('Invalid or missing authentication token.')
       }
   
       const { restaurantId } = payload

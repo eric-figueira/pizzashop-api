@@ -10,7 +10,7 @@ export const setUpGetProfileRoute = (router: Router) => {
     const payload = verify(authCookie)
 
     if (!payload) {
-      throw new UnauthorizedError('Unauthorized.')
+      throw new UnauthorizedError('Invalid or missing authentication token.')
     }
 
     const { sub } = payload
