@@ -23,10 +23,15 @@ export const sign = (data: UserPayload, expiresIn?: number) => {
 }
 
 export const verify = (token: string) => {
+  if (token === undefined) return null
+  
   z.jwt().parse(token)
-
-  const decoded = jwt.verify(token, env.JWT_SECRET_KEY)
-  const payload = userPaylodSchema.parse(decoded)
-
-  return payload
+  
+  try 
+  {
+    const decoded = jwt.verify(token, env.JWT_SECRET_KEY)
+    const payload = userPaylodSchema.parse(decoded)
+    return payload
+  }
+  catch (err) { return null }
 }

@@ -17,6 +17,7 @@ r.setUpRegisterRestaurantRoute(router)
 r.setUpSendAuthLinkRoute(router)
 r.setUpAuthenticateFromLinkRoute(router)
 r.setUpSignOutRoute(router)
+r.setUpGetProfileRoute(router)
 
 
 app.listen(3000, () => {

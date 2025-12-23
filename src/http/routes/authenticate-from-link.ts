@@ -53,6 +53,8 @@ export const setUpAuthenticateFromLinkRoute = (router: Router) => {
 
     await db.delete(authLinks).where(eq(authLinks.code, code))
 
-    res.redirect(redirect)
+    //res.redirect(redirect)
+
+    res.send(200)
   })
 }
