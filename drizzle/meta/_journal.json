@@ -43,6 +43,13 @@
       "when": 1766581276935,
       "tag": "0005_groovy_junta",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1766582538267,
+      "tag": "0006_volatile_bloodstrike",
+      "breakpoints": true
     }
   ]
 }
