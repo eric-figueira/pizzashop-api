@@ -1,0 +1,41 @@
+import { eq } from "drizzle-orm";
+import type { Router } from "express";
+import z from "zod";
+import { db } from "../../db/connection";
+import { orders } from "../../db/schema";
+import { AppError, NotFoundError, UnauthorizedError } from "../errors";
+import { authenticate } from "../middlewares/authentication";
+import { validate } from "../middlewares/request-parameters-validator";
+
+const cancelOrderSchema = z.object({
+  orderId: z.string(),
+})
+
+type CancelOrderDTO = z.infer<typeof cancelOrderSchema>
+
+export const setUpCancelOrderRoute = (router: Router) => {
+  router.patch('/orders/:orderId/cancel', authenticate, validate(cancelOrderSchema), async (req, res) => {
+    const { orderId } = req.params as CancelOrderDTO
+    const { restaurantId } = req.auth!
+
+    if (!restaurantId) {
+      throw new UnauthorizedError('User is not a restaurant manager.')
+    }
+
+    const order = await db.query.orders.findFirst({
+      where(fields, { eq }) {
+        return eq(fields.id, orderId)
+      },
+    })
+
+    if (!order) {
+      throw new NotFoundError('Order not found.')
+    }
+
+    if (!['pending', 'processing'].includes(order.status)) {
+      throw new AppError('You cannot cancel orders after dispatch.', 400)
+    }
+
+    await db.update(orders).set({ status: 'cancelled' }).where(eq(orders.id, orderId))
+  })
+}

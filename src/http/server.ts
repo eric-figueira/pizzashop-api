@@ -21,6 +21,10 @@ r.setUpSignOutRoute(router)
 r.setUpGetProfileRoute(router)
 r.setUpGetManagedRestaurantRoute(router)
 r.setUpGetOrderDetailsRoute(router)
+r.setUpApproveOrderRoute(router)
+r.setUpCancelOrderRoute(router)
+r.setUpDispatchOrderRoute(router)
+r.setUpDeliverOrderRoute(router)
 
 app.use(errorHandler)
 
