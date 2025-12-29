@@ -20,6 +20,7 @@ r.setUpAuthenticateFromLinkRoute(router)
 r.setUpSignOutRoute(router)
 r.setUpGetProfileRoute(router)
 r.setUpGetManagedRestaurantRoute(router)
+r.setUpGetOrderDetailsRoute(router)
 
 app.use(errorHandler)
 
