@@ -16,7 +16,6 @@ export const orders = pgTable('orders', {
     .$defaultFn(() => createId())
     .primaryKey(),
 	customerId: text('customer_id')
-    .notNull()
     .references(() => users.id, {
       onDelete: 'set null'
     }),

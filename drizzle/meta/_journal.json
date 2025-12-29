@@ -50,6 +50,13 @@
       "when": 1766582538267,
       "tag": "0006_volatile_bloodstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1767024973836,
+      "tag": "0007_keen_stardust",
+      "breakpoints": true
     }
   ]
 }
