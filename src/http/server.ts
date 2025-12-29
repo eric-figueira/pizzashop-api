@@ -25,6 +25,7 @@ r.setUpApproveOrderRoute(router)
 r.setUpCancelOrderRoute(router)
 r.setUpDispatchOrderRoute(router)
 r.setUpDeliverOrderRoute(router)
+r.setUpGetOrdersRoute(router)
 
 app.use(errorHandler)
 

@@ -1,0 +1,62 @@
+import type { Router } from "express"
+import { authenticate } from "../middlewares/authentication"
+import { NotFoundError, UnauthorizedError } from "../errors"
+import { db } from "../../db/connection"
+import z from "zod"
+import { validate } from "../middlewares/request-parameters-validator"
+import { createSelectSchema } from "drizzle-zod"
+import { orders, orderStatusEnum, users } from "../../db/schema"
+import { and, count, eq, getTableColumns, ilike } from "drizzle-orm"
+
+const getOrdersSchema = z.object({
+  customerName: z.string().optional(),
+  orderId: z.string().optional(),
+  status: createSelectSchema(orderStatusEnum).optional(),
+  pageIndex: z.number().min(0),
+})
+
+type GetOrdersDTO = z.infer<typeof getOrdersSchema>
+
+export const setUpGetOrdersRoute = (router: Router) => {
+  router.get('/orders', authenticate, validate(getOrdersSchema, "query"), async (req, res) => {
+    const { customerName, orderId, status, pageIndex } = req.query as unknown as GetOrdersDTO
+    const { restaurantId } = req.auth!
+
+    if (!restaurantId) {
+      throw new UnauthorizedError('User is not a restaurant manager.')
+    }
+
+    const orderTableColumns = getTableColumns(orders)
+
+    const baseQuery = db
+      .select(orderTableColumns)
+      .from(orders)
+      .innerJoin(users, eq(users.id, orders.customerId))
+      .where(and(
+        eq(orders.restaurantId, restaurantId),
+        orderId ? ilike(orders.id, `%${orderId}%`) : undefined,
+        status ? eq(orders.status, status) : undefined,
+        customerName ? ilike(users.name, `%${customerName}%`) : undefined,
+      ))
+
+    const [amountOfOrdersQuery, allOrders] = await Promise.all([
+      db.select({ count: count() }).from(baseQuery.as('baseQuery')),
+      db
+        .select()
+        .from(baseQuery.as('baseQuery'))
+        .offset(pageIndex * 10)
+        .limit(10)
+    ])
+
+    const amountOfOrders = amountOfOrdersQuery[0] === undefined ? 0 : amountOfOrdersQuery[0].count
+    
+    res.send({
+      orders: allOrders,
+      meta: {
+        pageIndex,
+        perPage: 10,
+        totalCount: amountOfOrders
+      }
+    })
+  })
+}
