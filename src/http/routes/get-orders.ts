@@ -11,16 +11,20 @@ import { and, count, eq, getTableColumns, ilike } from "drizzle-orm"
 const getOrdersSchema = z.object({
   customerName: z.string().optional(),
   orderId: z.string().optional(),
-  status: createSelectSchema(orderStatusEnum).optional(),
-  pageIndex: z.number().min(0),
+  status: z.enum(orderStatusEnum.enumValues).optional(),
+  pageIndex: z.coerce.number().min(0).optional(),
 })
 
 type GetOrdersDTO = z.infer<typeof getOrdersSchema>
 
 export const setUpGetOrdersRoute = (router: Router) => {
   router.get('/orders', authenticate, validate(getOrdersSchema, "query"), async (req, res) => {
-    const { customerName, orderId, status, pageIndex } = req.query as unknown as GetOrdersDTO
-    const { restaurantId } = req.auth!
+    const { customerName, orderId, status } = req.query as GetOrdersDTO
+
+    let { pageIndex } = req.query as GetOrdersDTO
+    pageIndex = pageIndex === undefined ? 0 : pageIndex
+
+    const { restaurantId } = req.auth! 
 
     if (!restaurantId) {
       throw new UnauthorizedError('User is not a restaurant manager.')
