@@ -48,7 +48,7 @@ export const setUpAuthenticateFromLinkRoute = (router: Router) => {
 
     res.cookie('auth', token, { 
       httpOnly: true,
-      maxAge: 60 * 60 * 24 * 1, // 1 day,
+      maxAge: 1000 * 60 * 60 * 24 * 1, // 1 day (miliseconds),
       path: '/',
     })
 
