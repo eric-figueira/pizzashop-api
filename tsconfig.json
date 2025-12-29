@@ -5,6 +5,7 @@
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "types": [],
+    "typeRoots": ["./src/http/@types", "./node_modules/@types"],
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
