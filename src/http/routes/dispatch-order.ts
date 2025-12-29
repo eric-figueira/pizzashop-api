@@ -15,7 +15,7 @@ const dispatchOrderSchema = z.object({
 type DispatchOrderDTO = z.infer<typeof dispatchOrderSchema>
 
 export const setUpDispatchOrderRoute = (router: Router) => {
-  router.patch('/orders/:orderId/dispatch', authenticate, validate(dispatchOrderSchema), async (req, res) => {
+  router.patch('/orders/:orderId/dispatch', authenticate, validate(dispatchOrderSchema, 'params'), async (req, res) => {
     const { orderId } = req.params as DispatchOrderDTO
     const { restaurantId } = req.auth!
 
@@ -38,5 +38,6 @@ export const setUpDispatchOrderRoute = (router: Router) => {
     }
 
     await db.update(orders).set({ status: 'delivering' }).where(eq(orders.id, orderId))
+    res.send()
   })
 }

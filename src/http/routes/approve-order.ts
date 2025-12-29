@@ -15,7 +15,7 @@ const approveOrderSchema = z.object({
 type ApproveOrderDTO = z.infer<typeof approveOrderSchema>
 
 export const setUpApproveOrderRoute = (router: Router) => {
-  router.patch('/orders/:orderId/approve', authenticate, validate(approveOrderSchema), async (req, res) => {
+  router.patch('/orders/:orderId/approve', authenticate, validate(approveOrderSchema, 'params'), async (req, res) => {
     const { orderId } = req.params as ApproveOrderDTO
     const { restaurantId } = req.auth!
 
@@ -38,5 +38,6 @@ export const setUpApproveOrderRoute = (router: Router) => {
     }
 
     await db.update(orders).set({ status: 'processing' }).where(eq(orders.id, orderId))
+    res.send()
   })
 }

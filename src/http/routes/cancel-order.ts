@@ -15,7 +15,7 @@ const cancelOrderSchema = z.object({
 type CancelOrderDTO = z.infer<typeof cancelOrderSchema>
 
 export const setUpCancelOrderRoute = (router: Router) => {
-  router.patch('/orders/:orderId/cancel', authenticate, validate(cancelOrderSchema), async (req, res) => {
+  router.patch('/orders/:orderId/cancel', authenticate, validate(cancelOrderSchema, 'params'), async (req, res) => {
     const { orderId } = req.params as CancelOrderDTO
     const { restaurantId } = req.auth!
 
@@ -38,5 +38,6 @@ export const setUpCancelOrderRoute = (router: Router) => {
     }
 
     await db.update(orders).set({ status: 'cancelled' }).where(eq(orders.id, orderId))
+    res.send()
   })
 }
