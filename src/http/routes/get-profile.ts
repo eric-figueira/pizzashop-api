@@ -1,19 +1,12 @@
 import type { Router } from 'express'
-import { verify } from '../services/jwt'
 import { db } from '../../db/connection'
-import { NotFoundError, UnauthorizedError } from '../errors'
+import { NotFoundError } from '../errors'
+import { authenticate } from '../middlewares/authentication'
 
 export const setUpGetProfileRoute = (router: Router) => {
-  router.get('/me', async (req, res) => {
-    const authCookie = req.cookies.auth
-
-    const payload = verify(authCookie)
-
-    if (!payload) {
-      throw new UnauthorizedError('Invalid or missing authentication token.')
-    }
-
-    const { sub } = payload
+  router.get('/me', authenticate, async (req, res) => {
+    const { sub } = req.auth!
+    
     const user = await db.query.users.findFirst({
       where(fields, { eq }) {
         return eq(fields.id, sub)

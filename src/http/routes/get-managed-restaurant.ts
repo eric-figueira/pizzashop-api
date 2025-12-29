@@ -1,19 +1,12 @@
 import type { Router } from "express";
-import { verify } from "../services/jwt";
 import { db } from "../../db/connection";
 import { UnauthorizedError } from "../errors";
+import { authenticate } from "../middlewares/authentication";
 
 export const setUpGetManagedRestaurantRoute = (router: Router) => {
-  router.get('/managed-restaurant', async (req, res) => {
-      const authCookie = req.cookies.auth
-  
-      const payload = verify(authCookie)
-  
-      if (!payload) {
-        throw new UnauthorizedError('Invalid or missing authentication token.')
-      }
-  
-      const { restaurantId } = payload
+  router.get('/managed-restaurant', authenticate, async (req, res) => {
+      const { restaurantId } = req.auth!
+
       if (!restaurantId) {
         throw new UnauthorizedError('User is not a restaurant manager.')
       }

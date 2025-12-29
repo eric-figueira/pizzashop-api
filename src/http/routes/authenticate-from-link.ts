@@ -1,12 +1,12 @@
+import dayjs from 'dayjs'
+import { eq } from 'drizzle-orm'
 import type { Router } from 'express'
 import z from 'zod'
-import { validate } from '../middlewares/request-parameters-validator'
 import { db } from '../../db/connection'
-import dayjs from 'dayjs'
-import { sign } from '../services/jwt'
 import { authLinks } from '../../db/schema'
-import { eq } from 'drizzle-orm'
 import { NotFoundError, UnauthorizedError } from '../errors'
+import { validate } from '../middlewares/request-parameters-validator'
+import { sign } from '../services/jwt'
 
 const authenticateFromLinkSchema = z.object({
   code: z.string(),

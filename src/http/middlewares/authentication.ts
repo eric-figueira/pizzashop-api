@@ -14,4 +14,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   if (!payload) {
     throw new UnauthorizedError('Invalid authentication token.')
   }
+
+  req.auth = payload
+  next()
 }
