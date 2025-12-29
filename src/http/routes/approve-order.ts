@@ -6,6 +6,7 @@ import { orders } from "../../db/schema";
 import { AppError, NotFoundError, UnauthorizedError } from "../errors";
 import { authenticate } from "../middlewares/authentication";
 import { validate } from "../middlewares/request-parameters-validator";
+import { BadRequestError } from "../errors/bad-request-error";
 
 const approveOrderSchema = z.object({
   orderId: z.string(),
@@ -33,7 +34,7 @@ export const setUpApproveOrderRoute = (router: Router) => {
     }
 
     if (order.status !== 'pending') {
-      throw new AppError('Order is not pending.', 400)
+      throw new BadRequestError('Order is not pending.')
     }
 
     await db.update(orders).set({ status: 'processing' }).where(eq(orders.id, orderId))

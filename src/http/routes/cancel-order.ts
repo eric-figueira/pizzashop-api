@@ -6,6 +6,7 @@ import { orders } from "../../db/schema";
 import { AppError, NotFoundError, UnauthorizedError } from "../errors";
 import { authenticate } from "../middlewares/authentication";
 import { validate } from "../middlewares/request-parameters-validator";
+import { BadRequestError } from "../errors/bad-request-error";
 
 const cancelOrderSchema = z.object({
   orderId: z.string(),
@@ -33,7 +34,7 @@ export const setUpCancelOrderRoute = (router: Router) => {
     }
 
     if (!['pending', 'processing'].includes(order.status)) {
-      throw new AppError('You cannot cancel orders after dispatch.', 400)
+      throw new BadRequestError('You cannot cancel orders after dispatch.')
     }
 
     await db.update(orders).set({ status: 'cancelled' }).where(eq(orders.id, orderId))

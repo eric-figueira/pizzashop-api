@@ -6,6 +6,7 @@ import { orders } from "../../db/schema";
 import { AppError, NotFoundError, UnauthorizedError } from "../errors";
 import { authenticate } from "../middlewares/authentication";
 import { validate } from "../middlewares/request-parameters-validator";
+import { BadRequestError } from "../errors/bad-request-error";
 
 const deliverOrderSchema = z.object({
   orderId: z.string(),
@@ -33,7 +34,7 @@ export const setUpDeliverOrderRoute = (router: Router) => {
     }
 
     if (order.status !== 'delivering') {
-      throw new AppError('You cannot deliver orders that are not being delivered.', 400)
+      throw new BadRequestError('You cannot deliver orders that are not being delivered.')
     }
 
     await db.update(orders).set({ status: 'delivered' }).where(eq(orders.id, orderId))

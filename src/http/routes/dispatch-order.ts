@@ -6,6 +6,7 @@ import { orders } from "../../db/schema";
 import { AppError, NotFoundError, UnauthorizedError } from "../errors";
 import { authenticate } from "../middlewares/authentication";
 import { validate } from "../middlewares/request-parameters-validator";
+import { BadRequestError } from "../errors/bad-request-error";
 
 const dispatchOrderSchema = z.object({
   orderId: z.string(),
@@ -33,7 +34,7 @@ export const setUpDispatchOrderRoute = (router: Router) => {
     }
 
     if (order.status !== 'processing') {
-      throw new AppError('You cannot dispatch orders that are not being processed.', 400)
+      throw new BadRequestError('You cannot dispatch orders that are not being processed.')
     }
 
     await db.update(orders).set({ status: 'delivering' }).where(eq(orders.id, orderId))
