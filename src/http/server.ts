@@ -26,6 +26,7 @@ r.setUpCancelOrderRoute(router)
 r.setUpDispatchOrderRoute(router)
 r.setUpDeliverOrderRoute(router)
 r.setUpGetOrdersRoute(router)
+r.setUpGetMonthlyRevenue(router)
 
 app.use(errorHandler)
 
