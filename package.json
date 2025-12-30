@@ -8,7 +8,8 @@
     "dev": "tsx --watch src/http/server.ts",
     "generate": "npx drizzle-kit generate",
     "migrate": "npx tsx src/db/migrate.ts",
-    "seed": "npx tsx src/db/seed.ts"
+    "seed": "npx tsx src/db/seed.ts",
+    "studio": "pnpm drizzle-kit studio"
   },
   "keywords": [],
   "author": "",
