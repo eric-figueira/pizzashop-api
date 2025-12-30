@@ -6,7 +6,7 @@ import z from "zod"
 import { validate } from "../middlewares/request-parameters-validator"
 import { createSelectSchema } from "drizzle-zod"
 import { orders, orderStatusEnum, users } from "../../db/schema"
-import { and, count, eq, getTableColumns, ilike } from "drizzle-orm"
+import { and, count, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm"
 
 const getOrdersSchema = z.object({
   customerName: z.string().optional(),
@@ -30,10 +30,14 @@ export const setUpGetOrdersRoute = (router: Router) => {
       throw new UnauthorizedError('User is not a restaurant manager.')
     }
 
-    const orderTableColumns = getTableColumns(orders)
-
     const baseQuery = db
-      .select(orderTableColumns)
+      .select({
+        orderId: orders.id,
+        createdAt: orders.createdAt,
+        status: orders.status,
+        total: orders.totalInCents,
+        customerName: users.name,
+      })
       .from(orders)
       .innerJoin(users, eq(users.id, orders.customerId))
       .where(and(
@@ -50,6 +54,19 @@ export const setUpGetOrdersRoute = (router: Router) => {
         .from(baseQuery.as('baseQuery'))
         .offset(pageIndex * 10)
         .limit(10)
+        .orderBy((fields) => {
+          return [
+            sql
+              `CASE ${fields.status} 
+                WHEN 'pending' THEN 1
+                WHEN 'processing' THEN 2
+                WHEN 'delivering' THEN 3
+                WHEN 'delivered' THEN 4
+                WHEN 'cancelled' THEN 5
+              END`,
+            desc(fields.createdAt)
+          ]
+        })
     ])
 
     const amountOfOrders = amountOfOrdersQuery[0] === undefined ? 0 : amountOfOrdersQuery[0].count
