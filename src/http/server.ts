@@ -31,6 +31,7 @@ r.setUpGetDailyOrdersAmount(router)
 r.setUpGetMonthlyOrdersAmount(router)
 r.setUpGetMonthlyCancelledOrdersAmount(router)
 r.setUpGetPopularProductsRoute(router)
+r.setUpGetDailyRevenueInPeriod(router)
 
 app.use(errorHandler)
 
