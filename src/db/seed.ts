@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { users, restaurants, orderItems, orders, products, authLinks } from './schema'
-import { db } from './connection'
 import { createId } from '@paralleldrive/cuid2'
+import { db } from './connection'
+import { authLinks, orderItems, orders, products, restaurants, users } from './schema'
 
 // Reset database
 await db.delete(users)

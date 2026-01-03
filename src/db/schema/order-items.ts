@@ -1,7 +1,7 @@
-import { pgTable, text, integer } from 'drizzle-orm/pg-core'
 import { createId } from '@paralleldrive/cuid2'
-import { orders, products } from '.'
 import { relations } from 'drizzle-orm'
+import { integer, pgTable, text } from 'drizzle-orm/pg-core'
+import { orders, products } from '.'
 
 export const orderItems = pgTable('order_items', {
   id: text('id')

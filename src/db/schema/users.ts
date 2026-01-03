@@ -1,6 +1,6 @@
-import { pgTable, text, pgEnum, timestamp } from 'drizzle-orm/pg-core'
 import { createId } from '@paralleldrive/cuid2'
 import { relations } from 'drizzle-orm'
+import { pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 import { orders, restaurants } from '.'
 
 export const userRoleEnum = pgEnum('user_role', ['manager', 'customer'])
