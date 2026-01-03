@@ -1,5 +1,5 @@
-import express, { Router } from 'express'
 import cookieParser from 'cookie-parser'
+import express, { Router } from 'express'
 import { errorHandler } from './middlewares/error-handler'
 import { setUpRoutes } from './setup-routes'
 

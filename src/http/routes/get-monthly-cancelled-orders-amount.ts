@@ -1,10 +1,10 @@
-import dayjs from "dayjs";
-import { and, count, eq, gte, sql, sum } from "drizzle-orm";
-import type { Router } from "express";
-import { db } from "../../db/connection";
-import { orders } from "../../db/schema";
-import { UnauthorizedError } from "../errors";
-import { authenticate } from "../middlewares/authentication";
+import dayjs from 'dayjs'
+import { and, count, eq, gte, sql } from 'drizzle-orm'
+import type { Router } from 'express'
+import { db } from '../../db/connection'
+import { orders } from '../../db/schema'
+import { UnauthorizedError } from '../errors'
+import { authenticate } from '../middlewares/authentication'
 
 export const setUpGetMonthlyCancelledOrdersAmount = (router: Router) => {
   router.get('/metrics/monthly-cancelled-orders-amount', authenticate, async (req, res) => {
@@ -27,7 +27,7 @@ export const setUpGetMonthlyCancelledOrdersAmount = (router: Router) => {
       .from(orders)
       .where(and(
         eq(orders.restaurantId, restaurantId),
-        eq(orders.status, "cancelled"),
+        eq(orders.status, 'cancelled'),
         gte(orders.createdAt, startOfLastMonth.toDate())
       ))
       .groupBy(sql`TO_CHAR(${orders.createdAt}, 'YYYY-MM')`)

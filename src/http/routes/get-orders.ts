@@ -1,12 +1,11 @@
-import type { Router } from "express"
-import { authenticate } from "../middlewares/authentication"
-import { NotFoundError, UnauthorizedError } from "../errors"
-import { db } from "../../db/connection"
-import z from "zod"
-import { validate } from "../middlewares/request-parameters-validator"
-import { createSelectSchema } from "drizzle-zod"
-import { orders, orderStatusEnum, users } from "../../db/schema"
-import { and, count, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm"
+import { and, count, desc, eq, ilike, sql } from 'drizzle-orm'
+import type { Router } from 'express'
+import z from 'zod'
+import { db } from '../../db/connection'
+import { orders, orderStatusEnum, users } from '../../db/schema'
+import { UnauthorizedError } from '../errors'
+import { authenticate } from '../middlewares/authentication'
+import { validate } from '../middlewares/request-parameters-validator'
 
 const getOrdersSchema = z.object({
   customerName: z.string().optional(),
@@ -18,7 +17,7 @@ const getOrdersSchema = z.object({
 type GetOrdersDTO = z.infer<typeof getOrdersSchema>
 
 export const setUpGetOrdersRoute = (router: Router) => {
-  router.get('/orders', authenticate, validate(getOrdersSchema, "query"), async (req, res) => {
+  router.get('/orders', authenticate, validate(getOrdersSchema, 'query'), async (req, res) => {
     const { customerName, orderId, status } = req.query as GetOrdersDTO
 
     let { pageIndex } = req.query as GetOrdersDTO

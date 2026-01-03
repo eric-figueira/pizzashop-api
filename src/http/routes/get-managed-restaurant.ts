@@ -1,7 +1,7 @@
-import type { Router } from "express";
-import { db } from "../../db/connection";
-import { UnauthorizedError } from "../errors";
-import { authenticate } from "../middlewares/authentication";
+import type { Router } from 'express'
+import { db } from '../../db/connection'
+import { UnauthorizedError } from '../errors'
+import { authenticate } from '../middlewares/authentication'
 
 export const setUpGetManagedRestaurantRoute = (router: Router) => {
   router.get('/managed-restaurant', authenticate, async (req, res) => {

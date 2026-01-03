@@ -1,10 +1,10 @@
-import type { Router } from "express";
-import { authenticate } from "../middlewares/authentication";
-import { UnauthorizedError } from "../errors";
-import dayjs from "dayjs"
-import { db } from "../../db/connection";
-import { orders } from "../../db/schema";
-import { and, eq, gte, sql, sum } from "drizzle-orm";
+import dayjs from 'dayjs'
+import { and, eq, gte, sql, sum } from 'drizzle-orm'
+import type { Router } from 'express'
+import { db } from '../../db/connection'
+import { orders } from '../../db/schema'
+import { UnauthorizedError } from '../errors'
+import { authenticate } from '../middlewares/authentication'
 
 export const setUpGetMonthlyRevenue = (router: Router) => {
   router.get('/metrics/monthly-revenue', authenticate, async (req, res) => {

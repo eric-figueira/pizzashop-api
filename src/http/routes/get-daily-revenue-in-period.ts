@@ -1,13 +1,13 @@
-import type { Router } from "express";
-import { authenticate } from "../middlewares/authentication";
-import { UnauthorizedError } from "../errors";
-import dayjs from "dayjs";
-import { db } from "../../db/connection";
-import { orders } from "../../db/schema";
-import { and, count, eq, gte, lt, lte, sql, sum } from "drizzle-orm";
-import z from "zod";
-import { validate } from "../middlewares/request-parameters-validator";
-import { BadRequestError } from "../errors/bad-request-error";
+import dayjs from 'dayjs'
+import { and, eq, gte, lte, sql, sum } from 'drizzle-orm'
+import type { Router } from 'express'
+import z from 'zod'
+import { db } from '../../db/connection'
+import { orders } from '../../db/schema'
+import { UnauthorizedError } from '../errors'
+import { BadRequestError } from '../errors/bad-request-error'
+import { authenticate } from '../middlewares/authentication'
+import { validate } from '../middlewares/request-parameters-validator'
 
 const getDailyRevenueInPeriodSchema = z.object({
   from: z.string().optional(),
@@ -17,7 +17,7 @@ const getDailyRevenueInPeriodSchema = z.object({
 type GetDailyRevenueInPeriodDTO = z.infer<typeof getDailyRevenueInPeriodSchema>
 
 export const setUpGetDailyRevenueInPeriod = (router: Router) => {
-  router.get('/metrics/daily-revenue-in-period', authenticate, validate(getDailyRevenueInPeriodSchema, "query"), async (req, res) => {
+  router.get('/metrics/daily-revenue-in-period', authenticate, validate(getDailyRevenueInPeriodSchema, 'query'), async (req, res) => {
     const { restaurantId } = req.auth!
     const { from, to } = req.query as GetDailyRevenueInPeriodDTO
 

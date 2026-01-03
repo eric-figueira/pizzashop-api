@@ -1,9 +1,9 @@
+import { desc, eq, sum } from 'drizzle-orm'
 import type { Router } from 'express'
 import { db } from '../../db/connection'
-import { NotFoundError, UnauthorizedError } from '../errors'
-import { authenticate } from '../middlewares/authentication'
 import { orderItems, orders, products } from '../../db/schema'
-import { desc, eq, sum } from 'drizzle-orm'
+import { UnauthorizedError } from '../errors'
+import { authenticate } from '../middlewares/authentication'
 
 export const setUpGetPopularProductsRoute = (router: Router) => {
   router.get('/metrics/popular-products', authenticate, async (req, res) => {

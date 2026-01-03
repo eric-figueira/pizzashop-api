@@ -1,9 +1,8 @@
+import type { Router } from 'express'
+import z from 'zod'
 import { db } from '../../db/connection'
 import { restaurants, users } from '../../db/schema'
-import z from 'zod'
 import { validate } from '../middlewares/request-parameters-validator'
-import type { Router } from 'express'
-
 
 const insertRestaurantSchema = z.object({
   restaurantName: z.string().nonempty(),

@@ -1,6 +1,6 @@
+import jwt from 'jsonwebtoken'
 import z from 'zod'
 import { env } from '../../env'
-import jwt from 'jsonwebtoken'
 
 const userPaylodSchema = z.object({
   sub: z.string(),

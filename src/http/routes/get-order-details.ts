@@ -1,9 +1,9 @@
-import type { Router } from "express"
-import { authenticate } from "../middlewares/authentication"
-import { NotFoundError, UnauthorizedError } from "../errors"
-import { db } from "../../db/connection"
-import z from "zod"
-import { validate } from "../middlewares/request-parameters-validator"
+import type { Router } from 'express'
+import z from 'zod'
+import { db } from '../../db/connection'
+import { NotFoundError, UnauthorizedError } from '../errors'
+import { authenticate } from '../middlewares/authentication'
+import { validate } from '../middlewares/request-parameters-validator'
 
 const getProfileSchema = z.object({
   orderId: z.string(),
@@ -12,7 +12,7 @@ const getProfileSchema = z.object({
 type GetProfileDTO = z.infer<typeof getProfileSchema>
 
 export const setUpGetOrderDetailsRoute = (router: Router) => {
-  router.get('/orders/:orderId', authenticate, validate(getProfileSchema, "params"), async (req, res) => {
+  router.get('/orders/:orderId', authenticate, validate(getProfileSchema, 'params'), async (req, res) => {
     const { orderId } = req.params as GetProfileDTO
     const { restaurantId } = req.auth!
 

@@ -1,13 +1,13 @@
+import { createId } from '@paralleldrive/cuid2'
 import type { Router } from 'express'
+import nodemailer from 'nodemailer'
 import z from 'zod'
-import { validate } from '../middlewares/request-parameters-validator'
 import { db } from '../../db/connection'
 import { authLinks } from '../../db/schema'
-import { createId } from '@paralleldrive/cuid2'
 import { env } from '../../env'
-import { mail } from '../services/mail'
-import nodemailer from 'nodemailer'
 import { NotFoundError } from '../errors'
+import { validate } from '../middlewares/request-parameters-validator'
+import { mail } from '../services/mail'
 
 const sendAuthLinkSchema = z.object({
   email: z.email(),
@@ -53,7 +53,6 @@ export const setUpSendAuthLinkRoute = (router: Router) => {
     })
 
     console.log(nodemailer.getTestMessageUrl(info))
-    console.log(authLink.toString())
 
     res.send()
   })
