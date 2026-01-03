@@ -28,6 +28,7 @@ r.setUpDeliverOrderRoute(router)
 r.setUpGetOrdersRoute(router)
 r.setUpGetMonthlyRevenue(router)
 r.setUpGetDailyOrdersAmount(router)
+r.setUpGetMonthlyOrdersAmount(router)
 
 app.use(errorHandler)
 
