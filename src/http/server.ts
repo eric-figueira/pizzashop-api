@@ -1,10 +1,17 @@
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import express, { Router } from 'express'
+import { env } from '../env'
 import { errorHandler } from './middlewares/error-handler'
 import { setUpRoutes } from './setup-routes'
 
 const app = express()
 const router = Router()
+
+app.use(cors({ 
+  origin: [env.AUTH_REDIRECT_URL],
+  credentials: true,
+}))
 
 app.use(express.json())
 app.use(cookieParser())

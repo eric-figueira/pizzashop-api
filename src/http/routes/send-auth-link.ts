@@ -53,6 +53,7 @@ export const setUpSendAuthLinkRoute = (router: Router) => {
     })
 
     console.log(nodemailer.getTestMessageUrl(info))
+    console.log(authLink.toString())
 
     res.send()
   })
