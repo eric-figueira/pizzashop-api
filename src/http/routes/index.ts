@@ -8,6 +8,7 @@ export * from './get-managed-restaurant'
  * Users
  */
 export * from './get-profile'
+export * from './update-profile'
 
 /**
  * Orders

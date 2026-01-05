@@ -15,7 +15,7 @@ const updateProfileSchema = z.object({
 type UpdateProfileDTO = z.infer<typeof updateProfileSchema>
 
 export const setUpUpdateProfile = (router: Router) => {
-  router.post('/me', authenticate, validate(updateProfileSchema), async (req, res) => {
+  router.put('/profile', authenticate, validate(updateProfileSchema), async (req, res) => {
     const { restaurantId } = req.auth!
 
     if (!restaurantId) {

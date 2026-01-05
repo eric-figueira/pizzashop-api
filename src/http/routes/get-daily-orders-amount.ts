@@ -47,7 +47,7 @@ export const setUpGetDailyOrdersAmount = (router: Router) => {
       : null
 
     res.send({
-      amount: todayOrdersAmount?.amount,
+      amount: todayOrdersAmount ? todayOrdersAmount.amount : 0,
       diffFromYesterday: diffFromYesterday ? Number((diffFromYesterday - 100).toFixed(2)) : 0,
     })
   })

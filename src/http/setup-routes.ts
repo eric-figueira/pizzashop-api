@@ -12,6 +12,7 @@ export const setUpRoutes = (router: Router) => {
    * User Routes
    */
   routes.setUpGetProfileRoute(router)
+  routes.setUpUpdateProfile(router)
 
   /**
    * Orders Routes

@@ -48,7 +48,7 @@ export const setUpGetMonthlyCancelledOrdersAmount = (router: Router) => {
       : null
 
     res.send({
-      revenue: currentMonthOrdersAmount?.amount,
+      amount: currentMonthOrdersAmount ? currentMonthOrdersAmount.amount : 0,
       diffFromLastMonth: diffFromLastMonth ? Number((diffFromLastMonth - 100).toFixed(2)) : 0,
     })
   })
